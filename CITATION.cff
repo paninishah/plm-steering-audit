@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper."
+title: "The Confessions of a Protein Language Model: Steering, Activations, and What Predicted Confidence Cannot Certify"
+type: software
+license: MIT
+repository-code: "https://github.com/paninishah/plm-steering-audit"
+date-released: "2026-10-19"
+authors:
+  - family-names: Shah
+    given-names: Panini
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+  - family-names: Panchali
+    given-names: Raj
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+  - family-names: Mody
+    given-names: Pearl
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+  - family-names: Sanghvi
+    given-names: Mahek
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+  - family-names: Narvekar
+    given-names: Meera
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+  - family-names: Karani
+    given-names: Ruhina
+    affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+preferred-citation:
+  type: conference-paper
+  title: "The Confessions of a Protein Language Model: Steering, Activations, and What Predicted Confidence Cannot Certify"
+  collection-title: "NeurIPS 2026 Workshop on AI for Drug Discovery"
+  year: 2026
+  authors:
+    - family-names: Shah
+      given-names: Panini
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+    - family-names: Panchali
+      given-names: Raj
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+    - family-names: Mody
+      given-names: Pearl
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+    - family-names: Sanghvi
+      given-names: Mahek
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+    - family-names: Narvekar
+      given-names: Meera
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
+    - family-names: Karani
+      given-names: Ruhina
+      affiliation: "Dwarkadas J. Sanghvi College of Engineering"
