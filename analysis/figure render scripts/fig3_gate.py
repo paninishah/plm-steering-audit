@@ -126,7 +126,7 @@ ax_sc.set_xlabel("distinct 3-mer fraction  (less repetitive $\\rightarrow$)",
                  fontsize=7.2)
 ax_sc.set_ylabel("ESMFold mean pLDDT", fontsize=7.2)
 ax_sc.tick_params(labelsize=6.2)
-ax_sc.set_title("what the steering optimises\ndoes not predict the gate",
+ax_sc.set_title("what the steering optimises\nshows no clear link to the gate",
                 fontsize=7.6, color=DARK, pad=7, linespacing=1.4)
 
 # ============================================================== panel (b)
@@ -162,7 +162,7 @@ for side in ("right", "top"):
 ax_rho.text(0.365, -0.86, "$n$ = 1,859 external designed sequences",
             ha="right", va="bottom", fontsize=5.4, color=GREY)
 
-ax_rho.set_title("and the gate does not\npredict the truth",
+ax_rho.set_title("and the gate tracks measured\nstability only weakly",
                  fontsize=7.6, color=DARK, pad=7, linespacing=1.4)
 
 # panel letters
