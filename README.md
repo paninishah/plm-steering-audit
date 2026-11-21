@@ -6,6 +6,8 @@ Discovery).
 
 Panini Shah, Raj Panchali, Pearl Mody, Mahek Sanghvi, Meera Narvekar, Ruhina Karani
 
+Preprint: [bioRxiv 10.64898/2026.11.10.765136](https://doi.org/10.64898/2026.11.10.765136)
+
 This repository contains the notebooks that produced every number in the paper, the
 saved artifacts they wrote, and the scripts that render the figures.
 
@@ -171,7 +173,21 @@ If you use this code or data, please cite the paper (GitHub also offers this via
   title     = {The Confessions of a Protein Language Model: Steering, Activations, and What Predicted Confidence Cannot Certify},
   author    = {Shah, Panini and Panchali, Raj and Mody, Pearl and Sanghvi, Mahek and Narvekar, Meera and Karani, Ruhina},
   booktitle = {NeurIPS 2026 Workshop on AI for Drug Discovery},
-  year      = {2026}
+  year      = {2026},
+  note      = {Preprint: bioRxiv 10.64898/2026.11.10.765136}
+}
+```
+
+The same work is posted as a bioRxiv preprint. Cite it directly if you need a DOI:
+
+```bibtex
+@article{shah2026confessions_biorxiv,
+  title     = {The Confessions of a Protein Language Model: Steering, Activations, and What Predicted Confidence Cannot Certify},
+  author    = {Shah, Panini and Panchali, Raj and Mody, Pearl and Sanghvi, Mahek and Narvekar, Meera and Karani, Ruhina},
+  journal   = {bioRxiv},
+  year      = {2026},
+  doi       = {10.64898/2026.11.10.765136},
+  url       = {https://www.biorxiv.org/content/10.64898/2026.11.10.765136v1}
 }
 ```
 
