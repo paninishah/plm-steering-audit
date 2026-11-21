@@ -81,8 +81,6 @@
     <p class="lede">A generate-and-screen pipeline has two moving parts: an intervention that shapes generation, and a cheap readout that decides what is worth folding. We audit one of each.</p>
 
     <p class="prose">Protein generate-and-screen pipelines use interventions and readouts to select candidates, but rarely test whether these track their intended targets. We audit published repetition steering, ESMFold confidence, and an activation readout. Steering preserves confidence at its operating point, but a fitted cliff follows at &alpha;<sub>50</sub>&nbsp;=&nbsp;1.240&times; (sweep's own control: 64.0%). Direction matters at moderate matched-norm push, but not at saturation. Unsteered generator activations predict the confidence gate (ROC-AUC 0.786&nbsp;&plusmn;&nbsp;0.004), supporting cost-aware, model-specific triage. We also replicate established length sensitivity, through which shortening can manufacture false nulls. Yet on composition- and length-matched design&ndash;scramble pairs, no balanced-accuracy interval excludes chance for experimental stability. Predicting the gate does not establish foldability. We should test what a readout measures before using it to select.</p>
-
-    <p class="prose">We introduce no new method. The contribution is the audit.</p>
   </div>
 </section>
 
