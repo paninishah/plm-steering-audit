@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Confessions of a Protein Language Model</title>
+
+<meta name="description" content="An audit of repetition steering, ESMFold confidence and an activation readout in protein generate-and-screen pipelines. NeurIPS 2026 Workshop on AI for Drug Discovery.">
+<meta name="keywords" content="protein language models, activation steering, ESMFold, pLDDT, interpretability, drug discovery, NeurIPS 2026">
+<meta name="author" content="Panini Shah, Raj Panchali, Pearl Mody, Mahek Sanghvi, Meera Narvekar, Ruhina Karani">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Confessions of a Protein Language Model">
+<meta property="og:description" content="Steering, Activations, and What Predicted Confidence Cannot Certify. NeurIPS 2026 Workshop on AI for Drug Discovery.">
+<meta property="og:image" content="https://paninishah.github.io/plm-steering-audit/static/images/pipeline.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- ================================================================ -->
+<nav class="nav">
+  <div class="wrap nav__inner">
+    <span class="nav__mark">Confessions of a PLM</span>
+    <div class="nav__links tracked">
+      <a href="#abstract">Abstract</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#poster">Poster</a>
+      <a href="#cite">Cite</a>
+      <a href="https://github.com/paninishah/plm-steering-audit">Code</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================================================ -->
+<header class="hero wrap">
+  <p class="hero__venue tracked">NeurIPS 2026 Workshop on AI for Drug Discovery &mdash; Bridging the Translation Gap</p>
+
+  <h1 class="hero__title">The Confessions of a Protein Language Model: Steering, Activations, and What Predicted Confidence Cannot Certify</h1>
+
+  <p class="authors">
+    <span><b>Panini Shah</b><sup>&#42;</sup></span>
+    <span><b>Raj Panchali</b><sup>&#42;</sup></span>
+    <span>Pearl Mody</span>
+    <span>Mahek Sanghvi</span>
+    <span>Meera Narvekar</span>
+    <span>Ruhina Karani</span>
+  </p>
+  <p class="affil">Dwarkadas J. Sanghvi College of Engineering, Mumbai, India</p>
+  <p class="note"><sup>&#42;</sup>Equal contribution.</p>
+
+  <ul class="links">
+    <li><a class="btn tracked" href="static/pdfs/paper.pdf">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 1h5l3 3v11H4z"/><path d="M9 1v3h3"/></svg>
+      Paper
+    </a></li>
+    <li><a class="btn tracked" href="https://doi.org/10.64898/2026.11.10.765136">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.6"/><path d="M1.4 8h13.2M8 1.4a11 11 0 0 1 0 13.2M8 1.4a11 11 0 0 0 0 13.2"/></svg>
+      bioRxiv
+    </a></li>
+    <li><a class="btn tracked" href="https://github.com/paninishah/plm-steering-audit">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5.5 11.5 2 8l3.5-3.5M10.5 4.5 14 8l-3.5 3.5"/></svg>
+      Code
+    </a></li>
+    <li><a class="btn tracked" href="https://neurips.cc/virtual/2026/161183">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 2H2v12h12v-4"/><path d="M9.5 2H14v4.5M14 2 7.5 8.5"/></svg>
+      NeurIPS
+    </a></li>
+  </ul>
+</header>
+
+<!-- ================================================================ -->
+<section class="section" id="abstract">
+  <div class="wrap">
+    <h2 class="section__head tracked">Abstract</h2>
+
+    <p class="lede">A generate-and-screen pipeline has two moving parts: an intervention that shapes generation, and a cheap readout that decides what is worth folding. We audit one of each.</p>
+
+    <p class="prose">Protein generate-and-screen pipelines use interventions and readouts to select candidates, but rarely test whether these track their intended targets. We audit published repetition steering, ESMFold confidence, and an activation readout. Steering preserves confidence at its operating point, but a fitted cliff follows at &alpha;<sub>50</sub>&nbsp;=&nbsp;1.240&times; (sweep's own control: 64.0%). Direction matters at moderate matched-norm push, but not at saturation. Unsteered generator activations predict the confidence gate (ROC-AUC 0.786&nbsp;&plusmn;&nbsp;0.004), supporting cost-aware, model-specific triage. We also replicate established length sensitivity, through which shortening can manufacture false nulls. Yet on composition- and length-matched design&ndash;scramble pairs, no balanced-accuracy interval excludes chance for experimental stability. Predicting the gate does not establish foldability. We should test what a readout measures before using it to select.</p>
+
+    <p class="prose">We introduce no new method. The contribution is the audit.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section class="section" id="pipeline">
+  <div class="wrap">
+    <h2 class="section__head tracked">Pipeline</h2>
+    <figure>
+      <img src="static/images/pipeline.png"
+           alt="Pipeline diagram: generation under steering, an ESMFold confidence gate, and an activation readout that predicts the gate, with the audit interventions marked at each stage."
+           width="2000" height="894">
+      <figcaption><b>Figure 1.</b> The audited pipeline. An intervention shapes generation and a cheap readout decides what is worth folding. At each stage we remove the thing the method is supposed to depend on, and check whether anything changes.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section class="section" id="poster">
+  <div class="wrap">
+    <h2 class="section__head tracked">Poster</h2>
+
+    <!-- ---------------------------------------------------------------
+         STUB. To publish the poster:
+           1. add  static/pdfs/poster.pdf      (and a PNG export alongside it)
+           2. delete the .poster-stub block below
+           3. uncomment the block under it
+         The PNG carries mobile, where inline PDF rendering is unreliable.
+         --------------------------------------------------------------- -->
+
+    <div class="poster-stub">
+      <p>The poster goes here once it is made for Sydney, 11 December 2026.</p>
+    </div>
+
+    <!--
+    <figure>
+      <img src="static/images/poster.png" alt="Conference poster for the paper.">
+      <object class="poster-embed" data="static/pdfs/poster.pdf" type="application/pdf"></object>
+      <figcaption><a href="static/pdfs/poster.pdf">Download the poster (PDF)</a></figcaption>
+    </figure>
+    -->
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section class="section" id="cite">
+  <div class="wrap">
+    <h2 class="section__head tracked">Cite</h2>
+    <div class="cite">
+      <button class="copy tracked" type="button" data-copy="#bibtex">Copy</button>
+<pre id="bibtex">@inproceedings{shah2026confessions,
+  title     = {The Confessions of a Protein Language Model: Steering,
+               Activations, and What Predicted Confidence Cannot Certify},
+  author    = {Shah, Panini and Panchali, Raj and Mody, Pearl and
+               Sanghvi, Mahek and Narvekar, Meera and Karani, Ruhina},
+  booktitle = {NeurIPS 2026 Workshop on AI for Drug Discovery},
+  year      = {2026},
+  note      = {Preprint: bioRxiv 10.64898/2026.11.10.765136}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <p>
+      Code and data: <a href="https://github.com/paninishah/plm-steering-audit">github.com/paninishah/plm-steering-audit</a> &nbsp;&middot;&nbsp;
+      Preprint: <a href="https://doi.org/10.64898/2026.11.10.765136">10.64898/2026.11.10.765136</a>
+    </p>
+    <p>Released under the MIT License. &copy; 2026 the authors.</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".copy").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var el = document.querySelector(btn.dataset.copy);
+    if (!el) return;
+    var text = el.textContent;
+    var done = function () {
+      var original = btn.textContent;
+      btn.textContent = "Copied";
+      btn.dataset.done = "true";
+      setTimeout(function () {
+        btn.textContent = original;
+        btn.dataset.done = "false";
+      }, 1600);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); } catch (e) { /* no-op */ }
+      document.body.removeChild(ta);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
