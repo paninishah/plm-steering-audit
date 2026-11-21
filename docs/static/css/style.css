@@ -10,7 +10,7 @@
   --rule:    #dcdcdc;  /* hairlines only */
   --rule-sk: #ededed;  /* skeleton / stub fills */
 
-  --serif: "Bodoni Moda", "Didot", "Times New Roman", serif;
+  --serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   --gutter: 16px;
@@ -75,7 +75,7 @@ a:focus-visible, button:focus-visible {
 }
 .nav__mark {
   font-family: var(--serif);
-  font-variation-settings: "opsz" 16;
+  font-weight: 500;
   font-size: 17px;
   letter-spacing: 0.06em;
   white-space: nowrap;
@@ -88,29 +88,34 @@ a:focus-visible, button:focus-visible {
    Hero
    ------------------------------------------------------------------ */
 
-.hero { padding: 88px 0 56px; }
+.hero {
+  padding: 88px 0 56px;
+  text-align: center;
+}
 
 .hero__venue { color: var(--muted); margin-bottom: 34px; }
 
 .hero__title {
   font-family: var(--serif);
-  /* opsz follows the rendered size so hairlines stay visible when small */
-  font-variation-settings: "opsz" 72;
-  font-weight: 400;
-  font-size: clamp(26px, 4.9vw, 54px);
-  line-height: 1.18;
-  letter-spacing: 0.012em;
-  margin: 0 0 44px;
-  max-width: 23ch;
+  font-weight: 500;
+  font-size: clamp(27px, 4.9vw, 54px);
+  line-height: 1.2;
+  letter-spacing: 0.005em;
+  margin: 0 auto 44px;
+  max-width: 21ch;
   text-wrap: balance;
 }
 
 .authors {
   font-size: 16px;
   line-height: 2;
-  margin: 0 0 6px;
-  max-width: 62ch;
+  margin: 0 auto 6px;
 }
+.authors a {
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.authors a:hover { border-bottom-color: var(--ink); }
 .authors b { font-weight: 500; }
 /* keep each name and its separator together so a line never opens with a dot */
 .authors span { white-space: nowrap; }
@@ -124,7 +129,7 @@ a:focus-visible, button:focus-visible {
 .affil, .note {
   color: var(--muted);
   font-size: 14px;
-  margin: 0;
+  margin: 0 auto;
   max-width: 62ch;
 }
 .note { margin-top: 10px; }
@@ -134,6 +139,7 @@ a:focus-visible, button:focus-visible {
 .links {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   margin-top: 40px;
   padding: 0;
@@ -174,7 +180,7 @@ a:focus-visible, button:focus-visible {
 /* lead paragraph gets a touch of the display face */
 .lede {
   font-family: var(--serif);
-  font-variation-settings: "opsz" 28;
+  font-weight: 400;
   font-size: clamp(19px, 2.3vw, 24px);
   line-height: 1.6;
   max-width: 60ch;
@@ -287,7 +293,7 @@ figcaption b { color: var(--ink); font-weight: 500; }
 @media (max-width: 767px) {
   .hero { padding: 56px 0 40px; }
   .section { padding: 52px 0; }
-  .hero__title { font-variation-settings: "opsz" 36; max-width: none; }
+  .hero__title { max-width: none; }
   /* stack the bar: the links do not fit beside the mark at phone width */
   .nav__inner {
     flex-direction: column;
@@ -297,6 +303,15 @@ figcaption b { color: var(--ink); font-weight: 500; }
     padding: 14px 0;
   }
   .nav__links { gap: 16px 18px; }
+  /* the list wraps over three lines here, and a dot left stranded at the end
+     of a centred line reads as a typo — space the names instead */
+  .authors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 1.3em;
+  }
+  .authors span::after { content: none; }
   .btn { flex: 1 1 auto; justify-content: center; }
 }
 
